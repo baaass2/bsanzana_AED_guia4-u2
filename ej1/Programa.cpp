@@ -33,7 +33,6 @@ void insertarNodo(Nodo *&arbol, int n){
 void generarGrafo(Nodo *arbol){
 	
 	Grafo *grap = new Grafo(arbol);
-	grap->crearGrafo();
 }
 
 void imprimirPreorden(Nodo *arbol){
@@ -63,27 +62,41 @@ void imprimirPosrden(Nodo *arbol){
 		cout<< arbol->dato << "-";
 	}
 }
-
+Nodo *buscarMinimo(Nodo *arbol){
+	if(arbol == NULL){
+		return NULL;
+	}
+	if(arbol->izq != NULL){
+		return buscarMinimo(arbol->izq);
+	}else{
+		return arbol;
+	}
+}
 void eliminarNodo(Nodo *q){
-	
+	if(q->izq != NULL and q->der !=NULL){
+		Nodo *minimoIzq = buscarMinimo(q->der);
+		q->dato = minimoIzq->dato;
+		eliminarNodo(minimoIzq);
+	}
+	else if(q->izq != NULL and q->der == NULL){
+		
+		
+	}
 }
 
-Nodo *busqueda(Nodo *arbol, int n){
-	Nodo *q = NULL;
+Nodo *busqueda(Nodo *nEliminar, int n){
 	
-	if(arbol == NULL){
+	if(nEliminar == NULL){
 		cout<< "No se ha encontrado nodo." <<endl;
 	}
-	else if(n < arbol->dato){
-		eliminar(arbol->izq, n);
+	else if(n < nEliminar->dato){	
+		busqueda(nEliminar->izq, n);
 	}
-	else if(n > arbol->dato){
-		eliminar(arbol->der, n);
+	else if(n > nEliminar->dato){
+		busqueda(nEliminar->der, n);
 	}else{
-		q=arbol;
+		return nEliminar;
 	}
-	
-	return q;
 }
 
 void menu(Nodo *&arbol){
@@ -91,13 +104,14 @@ void menu(Nodo *&arbol){
 	int opc = 0;
 	int dato = 0;
 	int datoNuevo = 0;
+	Nodo *nEliminar = NULL;
 	
 	cout<< "MENU" <<endl;
 	do{
 		cout<< "" <<endl;
 		cout<< "[1] Insertar nodo." <<endl;
-		cout<< "[2] Eliminar nodo." <<endl;
-		cout<< "[3] Modificar nodo." <<endl;
+		cout<< "[2] Eliminar nodo NO." <<endl;
+		cout<< "[3] Modificar nodo NO ." <<endl;
 		cout<< "[4] Imprimir Preorden, Inorden y Posorden." <<endl;
 		cout<< "[5] Generar Grafo." <<endl;
 		cout<< "[6] Salir.        " <<endl;
@@ -109,10 +123,7 @@ void menu(Nodo *&arbol){
 					cin >> dato;
 					insertarNodo(arbol,dato);
 					break;
-			case 2: cout<< "Digite nodo a buscar: "; 
-					cin >> dato;
-					q=busqueda(arbol, dato);
-					eliminarNodo(q);
+			case 2: 
 					break;
 					
 			case 3: cout<< "Digite nodo a modificar: "; 
@@ -149,6 +160,7 @@ void imprimirInorden(Nodo *);
 void imprimirPosorden(Nodo *);
 Nodo *busqueda(Nodo *, int);
 void eliminarNodo(Nodo *);
+Nodo *buscarMinimo(Nodo *);
 
 Nodo *arbol = NULL;
 

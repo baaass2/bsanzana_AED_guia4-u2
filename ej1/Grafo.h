@@ -1,9 +1,7 @@
 #include <iostream>
 #include <fstream>
-
+#include <string>
 using namespace std;
-
-/* Archivo .h con todas las cabeceras */
 struct Nodo{
 	int dato;
 	Nodo *der;
@@ -11,15 +9,8 @@ struct Nodo{
 };
 
 class Grafo {
-    private:
-        Nodo *arbol = NULL;
-
-    public:
-        /* constructor*/
-        Grafo(Nodo *arbol);
-        
-        /* Métodos de la clase Grafo */
-        void crearGrafo();
-        void recorrerArbol (Nodo *, ofstream &);
+	public:
+		Grafo(Nodo *nodo);
+		void recorrerArbol (Nodo *, ofstream &);
         
 };
