@@ -36,8 +36,10 @@ void menu(Arbol a){
 			case 3: cout<< "Digite nodo a modificar: "; 
 					cin >> dato;
 					cout<< ""<<endl;
+					a.eliminarNodo(arbol, dato)
 					cout<< "Digite valor del nodo nuevo: "; 
 					cin >> datoNuevo;
+					a.insertarNodo(arbol, datoNuevo);
 					break;
 			
 			case 4: cout<< "PREORDEN"<<endl;
