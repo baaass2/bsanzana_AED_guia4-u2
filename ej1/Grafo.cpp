@@ -20,12 +20,12 @@ Grafo::Grafo (Nodo *nodo) {
 
 		fp.close();
 
-		system("dot -Tpng -ografo.png grafo.txt &");
+		system("dot -Tpng -o grafo.png grafo.txt");
 			
-		pid2 = fork();
-		if (pid2 == 0) { 
-			system("eog grafo.png &");
-		}
+		//~ pid2 = fork();
+		//~ if (pid2 == 0) { 
+			//~ system("eog grafo.png &");
+		//~ }
 	}
 }
 

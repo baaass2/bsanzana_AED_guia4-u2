@@ -1,116 +1,20 @@
 #include <iostream>
 #include "Grafo.h"
+#include "Arbol.h"
 using namespace std;
 
-Nodo *crearNodo(int n){
-	Nodo *nuevoNodo = new Nodo();
-	
-	nuevoNodo->dato = n;
-	nuevoNodo->der = NULL;
-	nuevoNodo->izq = NULL;
-	
-	return nuevoNodo;
-}
-
-void insertarNodo(Nodo *&arbol, int n){
-	if(arbol == NULL){
-		Nodo *nuevoNodo = crearNodo(n);
-		arbol = nuevoNodo;
-	}else{
-		int valorRaiz = arbol->dato;
-		
-		if(n < valorRaiz){
-			insertarNodo(arbol->izq, n);
-		}
-		else if(n > valorRaiz){
-			insertarNodo(arbol->der, n);		
-		}else{
-			cout<< "ERROR: DATO REPETIDO" <<endl;
-		}
-			
-	}
-}
-void generarGrafo(Nodo *arbol){
-	
-	Grafo *grap = new Grafo(arbol);
-}
-
-void imprimirPreorden(Nodo *arbol){
-	if(arbol == NULL){
-		return;
-	}else{
-		cout<< arbol->dato << "-";
-		imprimirPreorden(arbol->izq);
-		imprimirPreorden(arbol->der);
-	}
-}
-void imprimirInorden(Nodo *arbol){
-	if(arbol == NULL){
-		return;
-	}else{
-		imprimirInorden(arbol->izq);
-		cout<< arbol->dato << "-";
-		imprimirInorden(arbol->der);
-	}
-}
-void imprimirPosrden(Nodo *arbol){
-	if(arbol == NULL){
-		return;
-	}else{
-		imprimirPosrden(arbol->izq);
-		imprimirPosrden(arbol->der);
-		cout<< arbol->dato << "-";
-	}
-}
-Nodo *buscarMinimo(Nodo *arbol){
-	if(arbol == NULL){
-		return NULL;
-	}
-	if(arbol->izq != NULL){
-		return buscarMinimo(arbol->izq);
-	}else{
-		return arbol;
-	}
-}
-void eliminarNodo(Nodo *q){
-	if(q->izq != NULL and q->der !=NULL){
-		Nodo *minimoIzq = buscarMinimo(q->der);
-		q->dato = minimoIzq->dato;
-		eliminarNodo(minimoIzq);
-	}
-	else if(q->izq != NULL and q->der == NULL){
-		
-		
-	}
-}
-
-Nodo *busqueda(Nodo *nEliminar, int n){
-	
-	if(nEliminar == NULL){
-		cout<< "No se ha encontrado nodo." <<endl;
-	}
-	else if(n < nEliminar->dato){	
-		busqueda(nEliminar->izq, n);
-	}
-	else if(n > nEliminar->dato){
-		busqueda(nEliminar->der, n);
-	}else{
-		return nEliminar;
-	}
-}
-
-void menu(Nodo *&arbol){
+void menu(Arbol a){
 	
 	int opc = 0;
 	int dato = 0;
 	int datoNuevo = 0;
-	Nodo *nEliminar = NULL;
+	Nodo *arbol = NULL;
 	
 	cout<< "MENU" <<endl;
 	do{
 		cout<< "" <<endl;
 		cout<< "[1] Insertar nodo." <<endl;
-		cout<< "[2] Eliminar nodo NO." <<endl;
+		cout<< "[2] Eliminar nodo." <<endl;
 		cout<< "[3] Modificar nodo NO ." <<endl;
 		cout<< "[4] Imprimir Preorden, Inorden y Posorden." <<endl;
 		cout<< "[5] Generar Grafo." <<endl;
@@ -121,9 +25,12 @@ void menu(Nodo *&arbol){
 		switch(opc){
 			case 1: cout<< "Digite un numero: "; 
 					cin >> dato;
-					insertarNodo(arbol,dato);
+					a.insertarNodo(arbol,dato);
 					break;
-			case 2: 
+					
+			case 2: cout<< "Digite nodo a eliminar: "; 
+					cin >> dato;
+					a.eliminarNodo(arbol, dato);
 					break;
 					
 			case 3: cout<< "Digite nodo a modificar: "; 
@@ -134,16 +41,16 @@ void menu(Nodo *&arbol){
 					break;
 			
 			case 4: cout<< "PREORDEN"<<endl;
-					imprimirPreorden(arbol);
+					a.imprimirPreorden(arbol);
 					cout<< "" <<endl;
 					cout<< "INORDEN"<<endl;
-					imprimirInorden(arbol);
+					a.imprimirInorden(arbol);
 					cout<< "" <<endl;
 					cout<< "POSORDEN"<<endl;
-					imprimirPosrden(arbol);
+					a.imprimirPosorden(arbol);
 					break;
 			
-			case 5: generarGrafo(arbol);
+			case 5: a.generarGrafo(arbol);
 					break;
 					
 					
@@ -151,25 +58,9 @@ void menu(Nodo *&arbol){
 	}while(opc != 6);
 }
 
-void menu(Nodo *&);
-Nodo *crearNodo(int);
-void insertarNodo(Nodo *&, int);
-void generarGrafo(Nodo *);
-void imprimirPreorden(Nodo *);
-void imprimirInorden(Nodo *);
-void imprimirPosorden(Nodo *);
-Nodo *busqueda(Nodo *, int);
-void eliminarNodo(Nodo *);
-Nodo *buscarMinimo(Nodo *);
-
-Nodo *arbol = NULL;
-
-
 int main (void) {
-	
-	int cont = 0;
-	
-	menu(arbol);
+	Arbol a = Arbol();
+	menu(a);
 	
     return 0;
 }

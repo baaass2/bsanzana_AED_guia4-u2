@@ -1,0 +1,16 @@
+digraph G {
+node [style=filled fillcolor=yellow];
+"20i"[shape=point];
+20->"20i";
+20->30;
+30->29;
+30->99;
+"29i"[shape=point];
+29->"29i";
+"29d"[shape=point];
+29->"29d";
+"99i"[shape=point];
+99->"99i";
+"99d"[shape=point];
+99->"99d";
+}
