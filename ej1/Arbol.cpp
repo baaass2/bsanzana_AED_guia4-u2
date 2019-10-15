@@ -33,11 +33,6 @@ void Arbol::insertarNodo(Nodo *&arbol, int n){
 			
 	}
 }
-void Arbol::generarGrafo(Nodo *arbol){
-	
-	Grafo *grap = new Grafo(arbol);
-}
-
 void Arbol::imprimirPreorden(Nodo *arbol){
 	if(arbol == NULL){
 		return;
@@ -136,11 +131,4 @@ Nodo* Arbol::busqueda(Nodo *nEliminar, int n){
 	}
 }
 
-//~ Nodo* Arbol::getArbol(){
-	//~ return this->raiz;
-//~ }
-
-//~ void Arbol::setArbol(Nodo *arbol){
-	//~ this->arbol = raiz;
-//~ }
 		

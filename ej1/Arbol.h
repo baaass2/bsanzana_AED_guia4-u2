@@ -7,7 +7,6 @@ class Arbol {
 		Arbol();
 		Nodo *crearNodo(int);
 		void insertarNodo(Nodo *&, int);
-		void generarGrafo(Nodo *);
 		void imprimirPreorden(Nodo *);
 		void imprimirInorden(Nodo *);
 		void imprimirPosorden(Nodo *);

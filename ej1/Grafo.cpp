@@ -1,56 +1,58 @@
-#include <fstream>
-#include <iostream>
-using namespace std;
 #include "Grafo.h"
-#include <unistd.h>
 
-Grafo::Grafo (Nodo *nodo) {
-	pid_t pid, pid2;
-	pid = fork();
-	ofstream fp;
-	
-	if (pid == 0) { 
-		fp.open ("grafo.txt");                
-		fp << "digraph G {" << endl;
-		fp << "node [style=filled fillcolor=yellow];" << endl;
-		
-		recorrerArbol(nodo, fp);
+using namespace std;
 
-		fp << "}" << endl;
-
-		fp.close();
-
-		system("dot -Tpng -o grafo.png grafo.txt");
-			
-		//~ pid2 = fork();
-		//~ if (pid2 == 0) { 
-			//~ system("eog grafo.png &");
-		//~ }
-	}
+/* Constructor de la Clase Grafo */
+Grafo::Grafo(Nodo *raiz) {
+    this->arbol = raiz;
 }
 
-void Grafo::recorrerArbol(Nodo *p, ofstream &fp) {
-	string cadena = "\0";
-	  
-	if (p != NULL) {
-		if (p->izq != NULL) {
-			fp <<  p->dato << "->" << p->izq->dato << ";" << endl;
-		} else {      
-			cadena = to_string(p->dato) + "i";
-			fp <<"\"" << cadena << "\"" <<"[shape=point];" << endl;
-			fp << p->dato << "->" <<"\"" << cadena << "\"" << ";" << endl;
-		}
-			
-		if (p->der != NULL) { 
-			fp << p->dato << "->" << p->der->dato << ";" << endl;
-		} else {
-			cadena = to_string(p->dato) + "d";
-			fp <<"\"" << cadena << "\"" << "[shape=point];" << endl;
-			fp << p->dato << "->" <<"\"" << cadena << "\"" << ";" << endl;
-		}
+/* ofstream es el tipo de dato correspondiente a archivos en cpp (el llamado es ofstream &nombre_archivo). */
+void Grafo::recorrerArbol(Nodo *p, ofstream &archivo) {
 
-		recorrerArbol(p->izq, fp);
-		recorrerArbol(p->der, fp); 
-	}
+  string infoTmp;
+  /* Se enlazan los nodos del grafo, para diferencia entre izq y der a cada nodo se le entrega un identificador al final, siendo i: izquierda
+   * y d: derecha, esto se cumplirá para los casos en donde los nodos no apunten a ningún otro (nodos finales) 
+   * */
+  if (p != NULL) {
+	/* Por cada nodo ya sea por izq o der se escribe dentro de la instancia del archivo */  
+    if (p->izq != NULL) {
+      archivo <<p->dato << "->" << p->izq->dato << ";" << endl;
+    }else {
+	  infoTmp = to_string(p->dato) + "i";
+      archivo <<"\"" << infoTmp << "\"" <<"[shape=point];" << endl;
+      archivo << p->dato << "->" <<"\"" << infoTmp << "\"" << ";" << endl;
+    }
+    
+    infoTmp = to_string(p->dato);
+    if (p->der != NULL) {
+      archivo << p->dato << "->" << p->der->dato << ";" << endl;
+    }else {
+	  infoTmp = to_string(p->dato) + "d";
+      archivo <<"\"" << infoTmp << "\"" << "[shape=point];" << endl;
+      archivo << p->dato << "->" <<"\"" << infoTmp << "\"" << ";" << endl;
+    }
+
+    /* Se realizan los llamados tanto por la izquierda como por la derecha para la creación del grafo */
+    recorrerArbol(p->izq, archivo);
+    recorrerArbol(p->der, archivo); 
+  }
 }
 
+void Grafo::crearGrafo() {
+    ofstream archivo;  
+    /* Se abre/crea el archivo datos.txt, a partir de este se generará el grafo */ 
+    archivo.open("datos.txt");
+    /* Se escribe dentro del archivo datos.txt "digraph G { " */ 
+    archivo << "digraph G {" << endl;
+    /* Se pueden cambiar los colores que representarán a los nodos, para el ejemplo el color será verde */
+    archivo << "node [style=filled fillcolor=green];" << endl;
+    /* Llamado a la función recursiva que genera el archivo de texto para creación del grafo */
+    recorrerArbol(this->arbol, archivo);
+    /* Se termina de escribir dentro del archivo datos.txt*/
+    archivo << "}" << endl;
+    archivo.close();
+    
+    /* genera el grafo */
+    system("dot -Tpng -ografo.png datos.txt &");
+}

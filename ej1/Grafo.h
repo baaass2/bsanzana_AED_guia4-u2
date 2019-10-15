@@ -1,15 +1,25 @@
 #include <iostream>
 #include <fstream>
+
 using namespace std;
-struct Nodo{
-	int dato;
-	Nodo *der;
-	Nodo *izq;
-};
+
+/* Archivo .h con todas las cabeceras */
+typedef struct _Nodo {
+    int dato;
+    struct _Nodo *izq;
+    struct _Nodo *der;
+} Nodo;
 
 class Grafo {
-	public:
-		Grafo(Nodo *nodo);
-		void recorrerArbol (Nodo *, ofstream &);
+    private:
+        Nodo *arbol = NULL;
+
+    public:
+        /* constructor*/
+        Grafo(Nodo *arbol);
+        
+        /* Métodos de la clase Grafo */
+        void crearGrafo();
+        void recorrerArbol (Nodo *, ofstream &);
         
 };
