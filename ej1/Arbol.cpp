@@ -73,9 +73,8 @@ Nodo* Arbol::buscarMinimo(Nodo *arbol){
 void Arbol::eliminarNodo(Nodo *&nEliminar, int n){
 	
 	Nodo* nOtro = NULL;
-	Nodo* nAux = NULL;
-	Nodo* nAux1 = NULL;
-	bool bo = false;
+	Nodo* nAux_der = NULL;
+	Nodo* nAux_derMax = NULL;
 	
 	if(nEliminar != NULL){
 		if(n < nEliminar->dato){
@@ -92,22 +91,15 @@ void Arbol::eliminarNodo(Nodo *&nEliminar, int n){
 				nEliminar = nOtro->der;
 			}
 			else{
-				nAux = nEliminar->izq;
-				bo = false;
-				while(nAux->der != NULL){
-					nAux1 = nAux;
-					nAux = nAux->der;
-					bo = true;
-				}
-				nEliminar->dato = nAux->dato;
-				nOtro = nAux;
-				if(bo == true){
-					nAux1->der == nAux->izq;
-				}
-				else{
-					nEliminar->izq = nAux->izq;
-				}
+				nAux_der = nEliminar->der;
+				nEliminar = nOtro->izq;
 				delete nOtro;
+				nAux_derMax = nEliminar;
+				
+				while(nAux_derMax->der != NULL){
+					nAux_derMax = nAux_derMax->der; 
+				}
+				nAux_derMax->der = nAux_der;
 			}
 		}
 	}
